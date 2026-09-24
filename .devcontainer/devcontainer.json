@@ -9,10 +9,7 @@
 
   "shutdownAction": "stopCompose",
 
-  "forwardPorts": [
-    3000,
-    4000
-  ],
+  "forwardPorts": [3000, 4000],
 
   "features": {
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
