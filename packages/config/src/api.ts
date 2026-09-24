@@ -1,0 +1,20 @@
+import { z } from 'zod';
+
+const apiEnvironmentSchema = z.object({
+  NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
+
+  PORT: z.coerce
+    .number()
+    .int()
+    .positive()
+    .max(65535)
+    .default(4000),
+});
+
+export type ApiConfig = z.infer<typeof apiEnvironmentSchema>;
+
+export function loadApiConfig(
+  environment: NodeJS.ProcessEnv = process.env,
+): ApiConfig {
+  return apiEnvironmentSchema.parse(environment);
+}
