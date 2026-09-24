@@ -1,0 +1,34 @@
+{
+  "name": "TicketFlow",
+
+  "dockerComposeFile": "docker-compose.yml",
+
+  "service": "app",
+
+  "workspaceFolder": "/workspace",
+
+  "shutdownAction": "stopCompose",
+
+  "forwardPorts": [
+    3000,
+    4000
+  ],
+
+  "features": {
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "bradlc.vscode-tailwindcss",
+        "ms-azuretools.vscode-docker",
+        "openai.chatgpt"
+      ]
+    }
+  },
+
+  "postCreateCommand": "node --version && pnpm --version"
+}
