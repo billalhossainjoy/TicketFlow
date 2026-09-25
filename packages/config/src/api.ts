@@ -1,14 +1,26 @@
 import { z } from 'zod';
 
 const apiEnvironmentSchema = z.object({
-  NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
+    NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
 
-  PORT: z.coerce
-    .number()
-    .int()
-    .positive()
-    .max(65535)
-    .default(4000),
+    PORT: z.coerce
+        .number()
+        .int()
+        .positive()
+        .max(65535)
+        .default(4000),
+
+    LOG_LEVEL: z
+    .enum([
+      'fatal',
+      'error',
+      'warn',
+      'info',
+      'debug',
+      'trace',
+      'silent',
+    ])
+    .default('info'),
 });
 
 export type ApiConfig = z.infer<typeof apiEnvironmentSchema>;

@@ -1,25 +1,47 @@
-
 import { loadApiConfig } from '@ticketflow/config/api';
 import { createApp } from './app.js';
+import { createLogger } from '@ticketflow/logger';
 
 const config = loadApiConfig();
 
-const app = createApp();
+const logger = createLogger({
+  level: config.LOG_LEVEL,
+  service: 'api',
+});
+
+const app = createApp(logger);
 
 const server = app.listen(config.PORT, () => {
-  console.log(`API listening on port ${config.PORT}`);
+  logger.info(
+    {
+      port: config.PORT,
+      environment: config.NODE_ENV,
+    },
+    'API started',
+  );
 });
 
 function shutdown(signal: string): void {
-  console.log(`${signal} received. Starting graceful shutdown.`);
+  logger.info(
+    {
+      signal,
+    },
+    'Graceful shutdown started',
+  );
 
   server.close((error) => {
     if (error) {
-      console.error('Failed to close HTTP server cleanly.', error);
+      logger.error(
+        {
+          err: error,
+        },
+        'Failed to close HTTP server',
+      );
+
       process.exit(1);
     }
 
-    console.log('HTTP server closed.');
+    logger.info('HTTP server closed');
     process.exit(0);
   });
 }
