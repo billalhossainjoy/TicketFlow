@@ -1,35 +1,25 @@
 {
-  "name": "@ticketflow/config",
+  "name": "@ticketflow/worker",
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
-    },
-    "./api": {
-      "types": "./dist/api.d.ts",
-      "import": "./dist/api.js"
-    },
-    "./worker": {
-      "types": "./dist/worker.d.ts",
-      "import": "./dist/worker.js"
-    }
-  },
   "scripts": {
+    "dev": "tsx watch src/main.ts",
     "build": "tsc -p tsconfig.json",
+    "start": "node dist/main.js",
     "lint": "eslint .",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "zod": "^4.6.5"
+    "@ticketflow/config": "workspace:*",
+    "@ticketflow/logger": "workspace:*"
   },
   "devDependencies": {
     "@ticketflow/eslint-config": "workspace:*",
     "@ticketflow/tsconfig": "workspace:*",
     "@types/node": "^26.6.2",
     "eslint": "^10.11.0",
+    "tsx": "^4.23.15",
     "typescript": "^7.0.2"
   }
 }
