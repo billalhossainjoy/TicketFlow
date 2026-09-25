@@ -1,6 +1,7 @@
 import { loadApiConfig } from '@ticketflow/config/api';
 import { createApp } from './app.js';
 import { createLogger } from '@ticketflow/logger';
+import { createDatabasePool } from './platform/database/database.js';
 
 const config = loadApiConfig();
 
@@ -9,7 +10,14 @@ const logger = createLogger({
   service: 'api',
 });
 
-const app = createApp(logger);
+const databasePool = createDatabasePool({
+  connectionString: config.DATABASE_URL,
+});
+
+const app = createApp({
+  logger,
+  databasePool,
+});
 
 const server = app.listen(config.PORT, () => {
   logger.info(
