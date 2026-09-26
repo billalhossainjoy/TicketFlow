@@ -1,3 +1,5 @@
+import 'dotenv/config';
+
 import { z } from 'zod';
 
 const apiEnvironmentSchema = z.object({
@@ -13,6 +15,12 @@ const apiEnvironmentSchema = z.object({
     .refine((value) => value.startsWith('postgresql://') || value.startsWith('postgres://'), {
       message: 'DATABASE_URL must be a PostgreSQL connection URL',
     }),
+
+  BETTER_AUTH_SECRET: z.string().min(32),
+
+  BETTER_AUTH_URL: z.url(),
+
+  WEB_ORIGIN: z.url(),
 });
 
 export type ApiConfig = z.infer<typeof apiEnvironmentSchema>;
