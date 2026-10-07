@@ -33,3 +33,5 @@ export function createAuth(dependencies: CreateAuthDependencies) {
     },
   });
 }
+
+export type Auth = ReturnType<typeof createAuth>;

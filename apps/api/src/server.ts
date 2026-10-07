@@ -2,6 +2,7 @@ import { loadApiConfig } from '@ticketflow/config/api';
 import { createApp } from './app.js';
 import { createLogger } from '@ticketflow/logger';
 import { createDatabase } from './platform/database/database.js';
+import { createAuth } from './modules/auth/auth.js';
 
 const config = loadApiConfig();
 
@@ -14,9 +15,16 @@ const database = createDatabase({
   connectionString: config.DATABASE_URL,
 });
 
+const auth = createAuth({
+  db: database.db,
+  config,
+});
+
 const app = createApp({
   logger,
   databasePool: database.pool,
+  auth,
+  webOrigin: config.WEB_ORIGIN,
 });
 
 const server = app.listen(config.PORT, () => {
