@@ -9,6 +9,8 @@ import cors from 'cors';
 import helmet from 'helmet';
 import { createBetterAuthRoutes } from './modules/auth/better-auth.routes.js';
 import { createAuthRoutes } from './modules/auth/auth.routes.js';
+import { createErrorHandler } from './platform/http/error-handler.js';
+import { notFoundHandler } from './platform/http/not-found-handler.js';
 
 export interface CreateAppDependencies {
   logger: Logger;
@@ -32,7 +34,7 @@ export function createApp({ logger, databasePool, auth, webOrigin }: CreateAppDe
     }),
   );
 
-  app.use(createBetterAuthRoutes);
+  app.use(createBetterAuthRoutes(auth));
 
   app.use(express.json());
 
@@ -64,6 +66,9 @@ export function createApp({ logger, databasePool, auth, webOrigin }: CreateAppDe
       });
     }
   });
+
+  app.use(notFoundHandler);
+  app.use(createErrorHandler(logger));
 
   return app;
 }

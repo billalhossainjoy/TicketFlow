@@ -13,7 +13,7 @@ services:
       DATABASE_URL: postgresql://ticketflow:ticketflow@postgres:5432/ticketflow
       BETTER_AUTH_URL: http://localhost:4000
       WEB_ORIGIN: http://localhost:3000
-      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET}
+      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:-fEVdtNc/RTmjHEThoZUu5sZxXMc/LANYwOZt6tIqZGQ=}
 
     depends_on:
       postgres:
