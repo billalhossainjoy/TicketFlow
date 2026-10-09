@@ -6,8 +6,9 @@ import { checkDatabaseReadiness } from './platform/database/database.js';
 import { Pool } from 'pg';
 import { Auth } from './modules/auth/auth.js';
 import cors from 'cors';
-import { toNodeHandler } from 'better-auth/node';
 import helmet from 'helmet';
+import { createBetterAuthRoutes } from './modules/auth/better-auth.routes.js';
+import { createAuthRoutes } from './modules/auth/auth.routes.js';
 
 export interface CreateAppDependencies {
   logger: Logger;
@@ -18,10 +19,9 @@ export interface CreateAppDependencies {
 
 export function createApp({ logger, databasePool, auth, webOrigin }: CreateAppDependencies) {
   const app = express();
+  app.use(helmet());
 
   app.disable('x-powered-by');
-
-  app.use(helmet());
   app.use(requestContext);
   app.use(createRequestLogger(logger));
 
@@ -32,9 +32,11 @@ export function createApp({ logger, databasePool, auth, webOrigin }: CreateAppDe
     }),
   );
 
-  app.all('/api/auth/*splat', toNodeHandler(auth));
+  app.use(createBetterAuthRoutes);
 
   app.use(express.json());
+
+  app.use('/api/v1', createAuthRoutes(auth));
 
   app.get('/health/live', (_request, response) => {
     response.status(200).json({
